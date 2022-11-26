@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from datetime import datetime
 from django.shortcuts import render
-from posts.models import Post, Comment
+from posts.models import Post, Comment, Hashtag
 
 
 def main(request):
@@ -16,9 +16,9 @@ def main(request):
 
 def posts_view(request):
     if request.method == 'GET':
-        category_id = request.GET.get('category_id')
-        if category_id:
-            posts = Post.objects.filter(category_id=category_id)
+        hashtag_id = request.GET.get('hashtag_id')
+        if hashtag_id:
+            posts = Post.objects.filter(hashtag_id=hashtag_id)
         else:
             posts = Post.objects.all()
 
@@ -56,3 +56,13 @@ def now_date(request):
 def bye(request):
     if request.method == 'GET':
         return HttpResponse('Goodbye user!!!')
+
+def hashtags_view(request, **kwargs):
+    if request.method == 'GET':
+        hashtags = Hashtag.objects.all()
+
+        data = {
+            'hashtags': hashtags
+        }
+
+        return render(request, 'hashtags/hashtags.html', context=data)
